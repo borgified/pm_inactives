@@ -26,7 +26,7 @@ foreach my $squad (@squads){
 	my @inactives = split(/<strike>/,$squad);
 	foreach my $inactive (@inactives){
 		if($inactive =~/(.*)<\/strike> /){
-			print "inactive: $1\n";
+			print "grey: $1\n";
 		}
 	}
 #reds (>21 days)
