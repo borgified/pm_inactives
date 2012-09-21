@@ -1,15 +1,22 @@
-#!/usr/bin/env perl
+package Squadroster;
 
+require Exporter;
 use warnings;
 use strict;
 
 use LWP::Simple;
 
+
+my @ISA = qw(Exporter);
+my @EXPORT = qw(list_squads list_red list_grey list_leadership);
+
+my $DEBUG=0;
+
 my $roster_content = get 'http://asgs.alleg.net/asgsweb/squads.aspx';
 
 my $token='<TD valign=\'top\' nowrap><B><U>';
 
-#my $token='valign';
+my %data;
 
 my @squads= split(/$token/,$roster_content);
 
@@ -25,9 +32,9 @@ foreach my $squad (@squads){
 	$squad=~/^(.*?)&nbsp;.*\(\@(.*?)\)/;
 
 	my $squad_name=$1;
-	my $tag=$2;
-	print "--------------------------\n";
-	print $squad_name," ",$tag,"\n";
+	my $squad_tag=$2;
+	$DEBUG && print "--------------------------\n";
+	$DEBUG && print $squad_name," ",$squad_tag,"\n";
 
 
 #identify squad leadership
@@ -38,7 +45,7 @@ foreach my $squad (@squads){
 			push(@squad_leadership,$1);
 		}
 	}
-	print "squad leadership: @squad_leadership\n";
+	$DEBUG && print "squad leadership: @squad_leadership\n";
 
 #inactives (>30 days)
 	my @inactives = split(/<strike>/,$squad);
@@ -50,7 +57,7 @@ foreach my $squad (@squads){
 			push(@grey,$1);
 		}
 	}
-	print "grey: @grey\n";
+	$DEBUG && print "grey: @grey\n";
 #reds (>21 days)
 	my @red; #sorry for the confusing naming convention...
 	my @reds = split(/<font color="red">/,$squad);
@@ -61,5 +68,31 @@ foreach my $squad (@squads){
 			push(@red,$1);
 		}
 	}
-	print "red: @red\n";
+	$DEBUG && print "red: @red\n";
+
+
+	$data{$squad_tag}{'leadership'}=\@squad_leadership;
+	$data{$squad_tag}{'red'}=\@red;
+	$data{$squad_tag}{'grey'}=\@grey;
+
 }
+
+sub list_squads{
+	return keys(%data);
+}
+
+sub list_red{
+	my $squad_tag=shift @_;
+	return ($data{$squad_tag}{'red'});
+}
+sub list_grey{
+	my $squad_tag=shift @_;
+	return ($data{$squad_tag}{'grey'});
+}
+sub list_leadership{
+	my $squad_tag=shift @_;
+	return ($data{$squad_tag}{'leadership'});
+}
+
+
+1;
