@@ -17,7 +17,13 @@ shift(@squads);
 
 foreach my $squad (@squads){
 
+#gotta remove all <b> </b> because when it shows up, it doesnt leave a space behind the
+#callsign which i use for pattern matching
+	$squad =~ s/<b>//gi;
+	$squad =~ s/<\/b>//gi;
+
 	$squad=~/^(.*?)&nbsp;.*\(\@(.*?)\)/;
+
 	my $squad_name=$1;
 	my $tag=$2;
 	print "--------------------------\n";
@@ -39,7 +45,7 @@ foreach my $squad (@squads){
 	my @grey;
 
 	foreach my $inactive (@inactives){
-		if($inactive =~/(.*)\s<\/strike> /){
+		if($inactive =~/[\*\+\^]?(.*)\s<\/strike> /){
 			#print "grey: $1\n";
 			push(@grey,$1);
 		}
@@ -50,7 +56,7 @@ foreach my $squad (@squads){
 	my @reds = split(/<font color="red">/,$squad);
 	shift(@reds);
 	foreach my $red (@reds){
-		if($red =~/(.*?)\s<\/strike><\/font>/){
+		if($red =~/[\*\+\^]?(.*?)\s<\/strike><\/font>/){
 			#print "red: $1\n";
 			push(@red,$1);
 		}
