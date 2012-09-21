@@ -36,17 +36,24 @@ foreach my $squad (@squads){
 
 #inactives (>30 days)
 	my @inactives = split(/<strike>/,$squad);
+	my @grey;
+
 	foreach my $inactive (@inactives){
-		if($inactive =~/(.*)<\/strike> /){
-			print "grey: $1\n";
+		if($inactive =~/(.*)\s<\/strike> /){
+			#print "grey: $1\n";
+			push(@grey,$1);
 		}
 	}
+	print "grey: @grey\n";
 #reds (>21 days)
+	my @red; #sorry for the confusing naming convention...
 	my @reds = split(/<font color="red">/,$squad);
 	shift(@reds);
 	foreach my $red (@reds){
-		if($red =~/(.*?) <\/strike><\/font>/){
-			print "red: $1\n";
+		if($red =~/(.*?)\s<\/strike><\/font>/){
+			#print "red: $1\n";
+			push(@red,$1);
 		}
 	}
+	print "red: @red\n";
 }
