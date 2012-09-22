@@ -1,7 +1,7 @@
 #!/usr/bin/env perl
 
 use CGI qw/:standard/;
-use Squadroster;
+use Alleg::Squadroster;
 
 
 my @squads = Squadroster::list_squads;
