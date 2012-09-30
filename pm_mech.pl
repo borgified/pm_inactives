@@ -1,11 +1,7 @@
 #!/usr/bin/env perl
 
-
-#need a check for failed pm sending due to wrong recipient name
-
 use warnings;
 use strict;
-
 
 use Alleg::PM;
 use Alleg::Squadroster;
