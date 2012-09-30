@@ -73,8 +73,10 @@ if($inactives == 0){
 	exit;
 }
 
-$input{'to'}=\@recipients;
+#$input{'to'}=\@recipients;
+my @testing=("fwiffo","fwiffo");
+$input{'to'}=\@testing;
 $input{'message'}=param('message');
-
+$input{'subject'}=param('subject');
 PM::send_pm(\%input);
 
