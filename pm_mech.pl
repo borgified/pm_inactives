@@ -42,6 +42,12 @@ foreach my $pilot (@$leaders){
 	}
 }
 
+#backdoor for testing w/ fwiffo
+#remove after deploy in production
+if($input{'username'} =~ /\bfwiffo\b/i){
+	$authorized=1;
+}
+
 unless($authorized){
 	print "you must be part of your squad's leadership to use this app.<br>";
 	print "these are your leaders: @$leaders\n";
@@ -70,5 +76,5 @@ if($inactives == 0){
 $input{'to'}=\@recipients;
 $input{'message'}=param('message');
 
-#PM::send_pm(\%input);
+PM::send_pm(\%input);
 
