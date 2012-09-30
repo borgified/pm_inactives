@@ -12,9 +12,24 @@ my %input;
 $input{'username'}=param('username');
 $input{'password'}=param('password');
 $input{'squad'}=param('squad');
-$input{'messaage'}=param('messaage');
+$input{'message'}=param('message');
 
 print header;
+
+#check that all fields are completely filled
+foreach my $field (keys %input){
+	if(($input{$field} eq '') or !(defined($input{$field}))){
+		print "$field is empty<br>\n";
+		print "need to enter all information before submitting.\n";
+		exit;
+	}
+}
+
+#check that at least one red or grey checkbox was checked
+unless(param('red') or param('grey')){
+	print "check red or grey or both.\n";
+	exit;
+}
 
 #check if $username belongs to squad leadership, if not, exit with a message
 my $leaders = Squadroster::list_leadership($input{'squad'});
@@ -33,11 +48,27 @@ unless($authorized){
 	exit;
 }
 
+#determine who the recepients are
+my @recipients;
+
+if(param('grey')){
+	my $a=Squadroster::list_grey($input{'squad'});
+	@recipients=(@recipients,@$a);
+}
+
+if(param('red')){
+	my $a=Squadroster::list_red($input{'squad'});
+	@recipients=(@recipients,@$a);
+}
+
+my $inactives = @recipients;
+if($inactives == 0){
+	print "there are no inactive pilots in your squad.\n";
+	exit;
+}
+
+$input{'to'}=\@recipients;
+$input{'message'}=param('message');
+
 #PM::send_pm(\%input);
 
-print "grey: ",param('grey'),"\n";
-print "red: ",param('red'),"\n";
-print "radio: ",param('squad'),"\n";
-print "username: ",param('username'),"\n";
-print "password: ",param('password'),"\n";
-print "textarea: ",param('message'),"\n";
