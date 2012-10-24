@@ -25,14 +25,8 @@ foreach my $field (keys %input){
 	}
 }
 
-#check that at least one red or grey checkbox was checked
-unless(param('red') or param('grey')){
-	print "check red or grey or both.\n";
-	exit;
-}
-
 #check if $username belongs to squad leadership, if not, exit with a message
-my $leaders = Squadroster::list_leadership($input{'squad'});
+my $leaders = Squadroster::list_leadership("$input{'squad'}");
 
 my $authorized=0;
 
@@ -78,5 +72,5 @@ $input{'to'}=\@recipients;
 #$input{'to'}=\@testing;
 $input{'message'}=param('message');
 $input{'subject'}=param('subject');
-PM::send_pm(\%input);
+#PM::send_pm(\%input);
 
