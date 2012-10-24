@@ -51,14 +51,12 @@ unless($authorized){
 my @recipients;
 
 my $a=Squadroster::list_inactive($input{'squad'});
-@recipients=@$a;
-
-my $inactives = @recipients;
-if($inactives == 0){
+if(!defined($a)){
 	print "there are no inactive pilots in your squad.\n";
 	exit;
+}else{
+	@recipients=@$a;
 }
-
 
 $input{'to'}=\@recipients;
 
