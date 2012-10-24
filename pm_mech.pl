@@ -36,8 +36,7 @@ foreach my $pilot (@$leaders){
 	}
 }
 
-#backdoor for testing w/ fwiffo
-#remove after deploy in production
+#uncomment following 3 lines backdoor for testing w/ fwiffo
 #if($input{'username'} =~ /\bfwiffo\b/i){
 #	$authorized=1;
 #}
@@ -48,18 +47,11 @@ unless($authorized){
 	exit;
 }
 
-#determine who the recepients are
+#determine who the recipients are
 my @recipients;
 
-if(param('grey')){
-	my $a=Squadroster::list_grey($input{'squad'});
-	@recipients=(@recipients,@$a);
-}
-
-if(param('red')){
-	my $a=Squadroster::list_red($input{'squad'});
-	@recipients=(@recipients,@$a);
-}
+my $a=Squadroster::list_inactive($input{'squad'});
+@recipients=@$a;
 
 my $inactives = @recipients;
 if($inactives == 0){
@@ -67,10 +59,14 @@ if($inactives == 0){
 	exit;
 }
 
+
 $input{'to'}=\@recipients;
+
+#uncomment following 2 lines for testing with fwiffo
 #my @testing=("fwiffo","fwiffo");
 #$input{'to'}=\@testing;
+
 $input{'message'}=param('message');
 $input{'subject'}=param('subject');
-#PM::send_pm(\%input);
+PM::send_pm(\%input);
 
