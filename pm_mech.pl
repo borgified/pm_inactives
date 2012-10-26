@@ -4,7 +4,7 @@ use warnings;
 use strict;
 
 use Alleg::PM;
-use Alleg::Squadroster;
+use Alleg::Squadroster 1.02;
 use CGI ':standard';
 
 my %input;
@@ -26,7 +26,7 @@ foreach my $field (keys %input){
 }
 
 #check if $username belongs to squad leadership, if not, exit with a message
-my $leaders = Squadroster::list_leadership("$input{'squad'}");
+my $leaders = Alleg::Squadroster::list_leadership("$input{'squad'}");
 
 my $authorized=0;
 
@@ -47,15 +47,34 @@ unless($authorized){
 	exit;
 }
 
+#check that at least one active or inactive checkbox was checked
+unless(param('active') or param('inactive')){
+	print "check active or inactive or both.\n";
+	exit;
+}
+
+
 #determine who the recipients are
 my @recipients;
 
-my $a=Squadroster::list_inactive($input{'squad'});
-if(!defined($a)){
-	print "there are no inactive pilots in your squad.\n";
+if(param('active')){
+	my $a=Alleg::Squadroster::list_active($input{'squad'});
+	if(defined($a)){
+		@recipients=(@recipients,@$a);
+	}
+}
+
+if(param('inactive')){
+	my $a=Alleg::Squadroster::list_inactive($input{'squad'});
+	if(defined($a)){
+		@recipients=(@recipients,@$a);
+	}
+}
+
+my $num_of_recipients = @recipients;
+if($num_of_recipients == 0){
+	print "there's nobody to send PMs to.\n";
 	exit;
-}else{
-	@recipients=@$a;
 }
 
 $input{'to'}=\@recipients;
@@ -66,5 +85,5 @@ $input{'to'}=\@recipients;
 
 $input{'message'}=param('message');
 $input{'subject'}=param('subject');
-PM::send_pm(\%input);
+Alleg::PM::send_pm(\%input);
 

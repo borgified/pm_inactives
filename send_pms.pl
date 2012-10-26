@@ -4,7 +4,7 @@ use CGI qw/:standard/;
 use Alleg::Squadroster;
 
 
-my @squads = Squadroster::list_squads;
+my @squads = Alleg::Squadroster::list_squads;
 my $squad_radio_btn;
 
 foreach my $squad (@squads){
@@ -14,9 +14,11 @@ foreach my $squad (@squads){
 print header,start_html;
 
 print <<HTML;
-<h1>Recall inactive pilots back into active duty</h1>
+<h1>Send PMs to pilots in your Squad's roster</h1>
 <form action="pm_mech.pl" method="POST">
 $squad_radio_btn<br>
+<input type="checkbox" name="active" value="1">PM actives<br>
+<input type="checkbox" name="inactive" value="1" checked>PM inactives<br>
 forum username <input type="text" name="username"><br>
 forum password <input type="text" name="password"><br>
 <hr>
