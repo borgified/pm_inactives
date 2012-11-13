@@ -1,7 +1,7 @@
 #!/usr/bin/env perl
 
 use CGI qw/:standard/;
-use Alleg::Squadroster 1.02;
+use Alleg::Squadroster 1.03;
 
 
 my @squads = Alleg::Squadroster::list_squads;
@@ -17,8 +17,9 @@ print <<HTML;
 <h1>Send PMs to pilots in your Squad's roster</h1>
 <form action="pm_mech.pl" method="POST">
 $squad_radio_btn<br>
-<input type="checkbox" name="active" value="1">PM actives<br>
-<input type="checkbox" name="inactive" value="1" checked>PM inactives<br>
+<input type="checkbox" name="active" value="1">PM actives on Roster Page<br>
+<input type="checkbox" name="inactive" value="1" checked>PM inactives on Roster Page<br>
+<input type="checkbox" name="unlisted" value="1" >PM pilots NOT LISTED on Roster Page (only for SysX) <i>talk to fwiffo if you want to use this feature for your squad</i><br>
 forum username <input type="text" name="username"><br>
 forum password <input type="text" name="password"><br>
 <hr>

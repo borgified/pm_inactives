@@ -3,8 +3,8 @@
 use warnings;
 use strict;
 
-use Alleg::PM;
-use Alleg::Squadroster 1.02;
+use Alleg::PM 1.03;
+use Alleg::Squadroster 1.03;
 use CGI ':standard';
 
 my %input;
@@ -48,8 +48,8 @@ unless($authorized){
 }
 
 #check that at least one active or inactive checkbox was checked
-unless(param('active') or param('inactive')){
-	print "check active or inactive or both.\n";
+unless(param('active') or param('inactive') or param('unlisted')){
+	print "check at least one of active, inactive or unlisted.\n";
 	exit;
 }
 
@@ -71,6 +71,13 @@ if(param('inactive')){
 	}
 }
 
+if(param('unlisted')){
+	my $a=Alleg::Squadroster::list_unlisted($input{'squad'});
+	if(defined($a)){
+		@recipients=(@recipients,@$a);
+	}
+}
+
 my $num_of_recipients = @recipients;
 if($num_of_recipients == 0){
 	print "there's nobody to send PMs to.\n";
@@ -80,7 +87,7 @@ if($num_of_recipients == 0){
 $input{'to'}=\@recipients;
 
 #uncomment following 2 lines for testing with fwiffo
-#my @testing=("fwiffo","fwiffo");
+#my @testing=("fwiffoa","fwiffob");
 #$input{'to'}=\@testing;
 
 $input{'message'}=param('message');
