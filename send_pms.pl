@@ -19,7 +19,7 @@ print <<HTML;
 $squad_radio_btn<br>
 <input type="checkbox" name="active" value="1">PM actives on Roster Page<br>
 <input type="checkbox" name="inactive" value="1" checked>PM inactives on Roster Page<br>
-<input type="checkbox" name="unlisted" value="1" >PM pilots NOT LISTED on Roster Page (only for SysX) <i>talk to fwiffo if you want to use this feature for your squad</i><br>
+<input type="checkbox" name="unlisted" value="1" >PM pilots NOT LISTED on Roster Page (not enabled by default) <i>talk to fwiffo if you want to use this feature for your squad</i><br>
 forum username <input type="text" name="username"><br>
 forum password <input type="text" name="password"><br>
 <hr>
