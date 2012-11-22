@@ -48,8 +48,8 @@ unless($authorized){
 }
 
 #check that at least one active or inactive checkbox was checked
-unless(param('active') or param('inactive') or param('unlisted')){
-	print "check at least one of active, inactive or unlisted.\n";
+unless(param('active') or param('inactive') or param('unlisted') or param('exsquadded')){
+	print "check at least one of active, inactive, unlisted or exsquadded.\n";
 	exit;
 }
 
@@ -77,6 +77,14 @@ if(param('unlisted')){
 		@recipients=(@recipients,@$a);
 	}
 }
+
+if(param('exsquadded') && ($input{'squad'} eq 'System X'))
+	my $a=Alleg::Squadroster::list_exsquadded;
+	if(defined($a)){
+		@recipients=(@recipients,@$a);
+	}
+}
+
 
 my $num_of_recipients = @recipients;
 if($num_of_recipients == 0){
