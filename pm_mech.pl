@@ -78,7 +78,7 @@ if(param('unlisted')){
 	}
 }
 
-if(param('exsquadded') && ($input{'squad'} eq 'System X'))
+if(param('exsquadded') && ($input{'squad'} eq 'System X')){
 	my $a=Alleg::Squadroster::list_exsquadded;
 	if(defined($a)){
 		@recipients=(@recipients,@$a);
