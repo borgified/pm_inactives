@@ -1,7 +1,7 @@
 #!/usr/bin/env perl
 
 use CGI qw/:standard/;
-use Alleg::Squadroster 1.03;
+use Alleg::Squadroster 1.05;
 
 
 my @squads = Alleg::Squadroster::list_squads;
@@ -10,6 +10,8 @@ my $squad_radio_btn;
 foreach my $squad (@squads){
 	$squad_radio_btn=$squad_radio_btn."<input type='radio' name='squad' value='$squad'>$squad </input>";
 }
+
+
 
 print header,start_html;
 

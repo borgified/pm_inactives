@@ -4,7 +4,7 @@ use warnings;
 use strict;
 
 use Alleg::PM 1.03;
-use Alleg::Squadroster 1.03;
+use Alleg::Squadroster 1.05;
 use CGI ':standard';
 
 my %input;
